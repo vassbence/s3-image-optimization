@@ -1,0 +1,20 @@
+{
+  "name": "s3-image-optimization",
+  "scripts": {
+    "postinstall": "rm -rf node_modules/sharp && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp",
+    "prebuild": "rm -rf dist",
+    "build": "esbuild src/image-optimizer-lambda.ts --bundle --external:sharp --platform=node --target=es2020 --outfile=dist/index.js",
+    "postbuild": "cp -r node_modules dist/node_modules && cd dist && zip -q -r image-optimizer-lambda.zip . && rm -rf node_modules && rm index.js && cp ../src/url-rewriter-cf-function.js ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.238.0",
+    "sharp": "^0.31.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.109",
+    "@types/node": "^18.11.18",
+    "@types/sharp": "^0.31.0",
+    "esbuild": "^0.16.10",
+    "typescript": "^4.9.4"
+  }
+}
