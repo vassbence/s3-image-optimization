@@ -52,7 +52,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
   }
 
   const optimizedImageBuffer = await sharp(image.byteArray)
-    .resize({ width })
+    .resize({ width, withoutEnlargement: true })
     .toFormat(format)
     .toBuffer();
 
